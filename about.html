@@ -21,26 +21,32 @@
     /* Navigation bar styling */
     .navigation {
       display: flex;
-      gap: 2rem;
-      padding: 2rem;
-      justify-content: center; /* Center navigation items */
-      width: 100%; /* Take full width */
-      background-color: #000; /* Background color for the nav bar */
-      position: fixed; /* Keep nav bar fixed at the top */
-      top: 0;
-      left: 0;
-      z-index: 1; /* Ensure nav bar is on top */
+      gap: 1.5rem;
+      position: fixed; /* Fix to bottom of page */
+      bottom: 50px; /* Increased space from the bottom */
+      left: 50%; /* Center horizontally */
+      transform: translateX(-50%); /* Adjust for centering */
+      z-index: 3;
+      opacity: 0; /* Start hidden */
+      transition: opacity 0.3s; /* Optional: smooth transition */
+      pointer-events: none; /* Prevent interaction when hidden */
     }
 
-    .menu-option {
-      color: white;
+    .navigation a {
+      color: white; /* Set text color to white */
       text-decoration: none;
       font-size: 1.2rem;
       transition: color 0.3s;
     }
 
-    .menu-option:hover {
+    .navigation a:hover {
       color: #e74c3c; /* Change color on hover */
+    }
+
+    /* Class to show navigation */
+    .navigation.visible {
+      opacity: 1; /* Show when scrolled */
+      pointer-events: auto; /* Enable interaction */
     }
 
     /* Main content area */
@@ -53,14 +59,11 @@
 
     /* Bio styling */
     .bio {
-  text-align: center; /* Center the text */
-  margin-top: 70px; /* Adjusts the top position */
-  margin-left: 20px; /* Adjusts the left position */
-  font-size: 2rem;
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  /* You can also use margin-right and margin-bottom if needed */
-}
-
+      text-align: center; /* Center the text */
+      margin-top: 70px; /* Adjusts the top position */
+      margin-left: 20px; /* Adjusts the left position */
+      font-size: 2rem;
+    }
 
     /* Vinyl styling */
     .vinyl {
@@ -194,19 +197,18 @@
         0 6px 12px rgba(0, 0, 0, 0.4),
         0 0 4px rgba(255, 255, 255, 0.3);
     }
+
   </style>
 </head>
 <body>
-  <div class="navigation"> 
-      <a href="gallery.html" class="menu-option">Gallery</a>
-      <a href="videoarchive.html" class="menu-option">Video Archive</a>
-      <a href="playlists.html" class="menu-option">Playlists</a>
-      <a href="bsjcrecs.html" class="menu-option">BSJC's Recs</a>
-      <a href="radio.html" class="menu-option">Radio</a>
-  </div>
 
   <div class="content">
-    <p class="bio">Welcome! We are Bocconi Students Jazz and Classical, an association full of music lovers, musicians, and creatives.</p>
+    <p class="bio">
+        Welcome!
+    </p>
+    <p class="bio">
+        We are Bocconi Students Jazz and Classical, an association full of music lovers, musicians, and creatives.
+    </p>
     <a href="index.html" class="vinyl"> <!-- Made vinyl button link to home -->
       <div class="vinyl-outer">
         <div class="vinyl-inner"></div>
@@ -221,8 +223,44 @@
       </div>
     </a>
   </div>
+
+  <div class="navigation"> 
+    <a href="gallery.html" class="menu-option">Gallery</a>
+    <a href="videoarchive.html" class="menu-option">Video Archive</a>
+    <a href="playlists.html" class="menu-option">Playlists</a>
+    <a href="bsjcrecs.html" class="menu-option">BSJC's Recs</a>
+    <a href="radio.html" class="menu-option">Radio</a>
+
+  </div>
+
+<script>
+    window.addEventListener('scroll', function() {
+      const navigation = document.querySelector('.navigation');
+      const totalHeight = document.body.scrollHeight; // Total height of the document
+      const scrollPosition = window.scrollY + window.innerHeight; // Current scroll position
+
+      if (scrollPosition >= totalHeight || totalHeight <= window.innerHeight) {
+        navigation.classList.add('visible'); // Show navigation
+      } else {
+        navigation.classList.remove('visible'); // Hide navigation
+      }
+    });
+
+    // Initial check for visibility
+    window.addEventListener('load', function() {
+      const navigation = document.querySelector('.navigation');
+      const totalHeight = document.body.scrollHeight;
+
+      if (totalHeight <= window.innerHeight) {
+        navigation.classList.add('visible'); // Show navigation if not enough content to scroll
+      }
+    });
+</script>
+
 </body>
 </html>
+
+
 
 
 

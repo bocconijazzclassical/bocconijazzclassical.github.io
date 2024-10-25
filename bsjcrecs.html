@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bocconi Students Jazz and Classical - Recommendations</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sigmar+One&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: #5499c7;
+      font-family: 'Sigmar One', cursive;
+      color: white;
+    }
+
+    /* Vinyl styling */
+    .vinyl {
+      position: absolute; /* Change to absolute for positioning */
+      top: 20px; /* Position it towards the top */
+      left: 20px; /* Position it towards the left */
+      width: 150px; /* Adjusted size */
+      height: 150px; /* Adjusted size */
+      cursor: pointer;
+      transition: transform 1s ease-in-out;
+      perspective: 1000px;
+      z-index: 2; /* Ensure vinyl is above the navigation */
+    }
+
+    .vinyl-outer {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle at center,
+        #000000 0%,
+        #171717 40%,
+        #272727 60%,
+        #171717 80%,
+        #000000 100%
+      );
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      box-shadow: 
+        0 4px 8px rgba(0, 0, 0, 0.3),
+        0 0 2px rgba(255, 255, 255, 0.2);
+    }
+
+    /* Vinyl grooves */
+    .vinyl-outer::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 95%;
+      height: 95%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: repeating-radial-gradient(
+        circle at center,
+        transparent 0px,
+        transparent 2px,
+        rgba(33, 33, 33, 0.3) 2px,
+        rgba(33, 33, 33, 0.3) 4px
+      );
+    }
+
+    /* Label styling */
+    .vinyl-inner {
+      width: 35%;
+      height: 35%;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle at center,
+        #e74c3c 0%,
+        #c0392b 100%
+      );
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      position: relative;
+      z-index: 5;
+    }
+
+    /* Center hole */
+    .vinyl-inner::after {
+      content: '';
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #000;
+      border-radius: 50%;
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .vinyl-text {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 3;
+    }
+
+    .vinyl-text svg {
+      position: absolute;
+      width: 70%;
+      height: 70%;
+      transform: rotate(-90deg); /* Adjust rotation for upright text */
+      transition: transform 0.3s ease;
+    }
+
+    .vinyl-text text {
+      fill: white;
+      font-size: 0.9rem;
+      font-weight: bold;
+      letter-spacing: 0.1rem;
+    }
+
+    /* Reflection effect */
+    .vinyl-outer::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.1) 0%,
+        rgba(255, 255, 255, 0) 50%,
+        rgba(255, 255, 255, 0.1) 100%
+      );
+      transform: rotate(-45deg);
+      pointer-events: none;
+    }
+
+    /* Hover effects */
+    .vinyl:hover .vinyl-outer {
+      box-shadow: 
+        0 6px 12px rgba(0, 0, 0, 0.4),
+        0 0 4px rgba(255, 255, 255, 0.3);
+    }
+
+ /* Navigation buttons styling */
+.navigation {
+  display: flex;
+  gap: 1.5rem;
+  position: fixed; /* Fix to bottom of page */
+  bottom: 50px; /* Increased space from the bottom */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Adjust for centering */
+  z-index: 3;
+  opacity: 0; /* Start hidden */
+  transition: opacity 0.3s; /* Optional: smooth transition */
+  pointer-events: none; /* Prevent interaction when hidden */
+}
+
+.navigation a {
+  color: white; /* Set text color to white */
+  text-decoration: none;
+  font-size: 1.2rem;
+  transition: color 0.3s;
+}
+
+.navigation a:hover {
+  color: #e74c3c; /* Change color on hover */
+}
+
+/* Class to show navigation */
+.navigation.visible {
+  opacity: 1; /* Show when scrolled */
+  pointer-events: auto; /* Enable interaction */
+}
+
+/* Add more space below the content */
+body {
+  padding-bottom: 100px; /* Add bottom padding */
+}
+
+
+
+
+    /* Content styling */
+    .content {
+      padding: 2rem;
+      text-align: center;
+      max-width: 800px;
+      margin-top: 20px; /* Adjusted to start closer to the top */
+    }
+
+    /* Section title styling */
+    h2 {
+      font-size: 2rem;
+      color: #e74c3c;
+      text-shadow: 2px 2px #333;
+      margin: 2rem 0;
+      text-transform: uppercase;
+    }
+
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    /* Recommendation sections */
+    .recommendation-section {
+      margin: 2rem 0; /* Original margin */
+    }
+
+    .recommendation-list {
+      list-style-type: none;
+      padding: 0;
+      margin-bottom: 2rem; /* Added space below each list */
+    }
+
+    .recommendation-list li {
+      font-size: 1.2rem;
+      margin: 0.5rem 0;
+      color: white; /* Set text color to white */
+    }
+
+    .recommendation-list li a {
+      color: white; /* Ensure link text is white */
+      text-decoration: none; /* Remove underline from links */
+    }
+
+    .recommendation-list li a:hover {
+      text-decoration: underline; /* Optional: Add underline on hover */
+    }
+  </style>
+</head>
+<body>
+  <!-- Vinyl home button -->
+  <div class="vinyl" onclick="location.href='index.html'"> <!-- Redirect to home page -->
+    <div class="vinyl-outer">
+      <div class="vinyl-inner"></div>
+      <div class="vinyl-text">
+        <svg viewBox="0 0 100 100">
+          <path id="curve1" d="M 50, 50 m -40, 0 a 40,40 0 1,1 80,0 a 40,40 0 1,1 -80,0" />
+          <text>
+            <textPath href="#curve1" startOffset="50%" text-anchor="middle">Home</textPath>
+          </text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation buttons at the bottom -->
+  <div class="navigation" id="navigation">
+    <a href="about.html">About Us</a>
+    <a href="gallery.html">Gallery</a>
+    <a href="videoarchive.html">Video Archive</a>
+    <a href="playlists.html">Playlists</a>
+    <a href="contactus.html">Contact Us</a>
+  </div>
+
+  <!-- Recommendations content -->
+  <div class="content">
+    <h2 id="vinyl-shops">Vinyl Shops</h2>
+    <ul class="recommendation-list">
+      <li><a href="https://maps.app.goo.gl/AfJzVB8kiV9mDByw6" target="_blank">Altri DischiVolanti</a></li>
+      <li><a href="https://maps.app.goo.gl/s8y3KkjYWCPa7Aeu7" target="_blank">BACKFLIP Records</a></li>
+      <li><a href="https://maps.app.goo.gl/scgWu5ZowwfnM218A" target="_blank">Dischivolanti Di Guida Caterina SaS</a></li>
+      <li><a href="https://maps.app.goo.gl/TyPBxMWUsWX6tYC26" target="_blank">The Discomane Snc</a></li>
+    </ul>
+
+    <h2 id="music-bars">Music Bars</h2>
+    <ul class="recommendation-list">
+      <li><a href="https://maps.app.goo.gl/rKjixuZKQ2ennhDY8" target="_blank">Bachelite cLab</a></li>
+      <li><a href="https://maps.app.goo.gl/TuVFmrruL4KKdJZu5" target="_blank">Nidaba Theatre - Live Music Club Milano Navigli</a></li>
+      <li><a href="https://maps.app.goo.gl/zHsvnRCtG81pw6vA6" target="_blank">Santeria Toscana 31</a></li>
+      <li><a href="https://maps.app.goo.gl/bDqY8f9a26dnfwtLA" target="_blank">Biko Club</a></li>
+      <li><a href="https://maps.app.goo.gl/4m6AZzESzpuAVu9A7" target="_blank">La Corte Dei Miracoli</a></li>
+      <li><a href="https://maps.app.goo.gl/GbYWSnrquNmyA4H27" target="_blank">Leoncavallo Autogestito Public Space</a></li>
+      <li><a href="https://maps.app.goo.gl/ZnU4ej1uHsoim6Md9" target="_blank">Cascina Cuccagna</a></li>
+      <li><a href="https://maps.app.goo.gl/Xq6irsFwPauTtX6h6" target="_blank">Cascina Nascosta</a></li>
+      <li><a href="https://maps.app.goo.gl/DUTF4NgKC6baLa1A9" target="_blank">Mou</a></li>
+      <li><a href="https://maps.app.goo.gl/h8H8G2YAydTPY2bc9" target="_blank">Blue Note Milano</a></li>
+      <li><a href="https://maps.app.goo.gl/URcZubGD4i3Ym3rAA" target="_blank">Auditorium Fondazione Cariplo</a></li>
+    </ul>
+
+    <h2 id="radios">Radios</h2>
+    <ul class="recommendation-list">
+      <li><a href="https://stranded.fm/" target="_blank">Stranded FM</a></li>
+      <li><a href="https://rundfunk.fm/" target="_blank">Rundfunk.fm</a></li>
+    </ul>
+  </div>
+
+  <script>
+    window.addEventListener('scroll', function() {
+      const navigation = document.getElementById('navigation');
+      if (window.scrollY + window.innerHeight >= document.body.offsetHeight) {
+        navigation.classList.add('visible'); // Show navigation
+      } else {
+        navigation.classList.remove('visible'); // Hide navigation
+      }
+    });
+  </script>
+  
+  
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
