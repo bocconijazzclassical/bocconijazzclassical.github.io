@@ -1,90 +1,232 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bocconi Students Jazz and Classical</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sigmar+One&display=swap" rel="stylesheet">
   <style>
     body {
       margin: 0;
       padding: 0;
       min-height: 100vh;
       display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #fef3c7;
-      font-family: Arial, sans-serif;
+      flex-direction: column; /* Stack items vertically */
+      align-items: flex-start; /* Align items to the left */
+      background-color: #5499c7;
+      font-family: 'Sigmar One', cursive;
+      color: white; /* Set text color to white */
     }
- 
-    .menu-container {
+
+    /* Navigation bar styling */
+    .navigation {
       display: flex;
       gap: 2rem;
       padding: 2rem;
+      justify-content: center; /* Center navigation items */
+      width: 100%; /* Take full width */
+      background-color: #000; /* Background color for the nav bar */
+      position: fixed; /* Keep nav bar fixed at the top */
+      top: 0;
+      left: 0;
+      z-index: 1; /* Ensure nav bar is on top */
     }
- 
+
+    .menu-option {
+      color: white;
+      text-decoration: none;
+      font-size: 1.2rem;
+      transition: color 0.3s;
+    }
+
+    .menu-option:hover {
+      color: #e74c3c; /* Change color on hover */
+    }
+
+    /* Main content area */
+    .content {
+      margin-top: 100px; /* Create space for the fixed navigation bar */
+      text-align: center;
+      padding: 2rem;
+      flex: 1; /* Allow content area to grow */
+    }
+
+    /* Bio styling */
+    .bio {
+  text-align: center; /* Center the text */
+  margin-top: 70px; /* Adjusts the top position */
+  margin-left: 20px; /* Adjusts the left position */
+  font-size: 2rem;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  /* You can also use margin-right and margin-bottom if needed */
+}
+
+
+    /* Vinyl styling */
     .vinyl {
-      position: relative;
-      width: 150px;
-      height: 150px;
+      position: absolute; /* Change to absolute for positioning */
+      top: 20px; /* Position it towards the top */
+      left: 20px; /* Position it towards the left */
+      width: 150px; /* Adjusted size */
+      height: 150px; /* Adjusted size */
       cursor: pointer;
-      transition: transform 0.5s ease;
+      transition: transform 1s ease-in-out;
+      perspective: 1000px;
+      z-index: 2; /* Ensure vinyl is above the navigation */
     }
- 
+
     .vinyl-outer {
       position: absolute;
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      background-color: #000;
+      background: radial-gradient(
+        circle at center,
+        #000000 0%,
+        #171717 40%,
+        #272727 60%,
+        #171717 80%,
+        #000000 100%
+      );
       display: flex;
       justify-content: center;
       align-items: center;
-      transition: transform 0.5s ease;
+      overflow: hidden;
+      box-shadow: 
+        0 4px 8px rgba(0, 0, 0, 0.3),
+        0 0 2px rgba(255, 255, 255, 0.2);
     }
- 
-    .vinyl-inner {
-      width: 40%;
-      height: 40%;
-      border-radius: 50%;
-      background-color: #808080;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-    }
- 
-    .vinyl:hover .vinyl-outer {
-      transform: rotate(360deg);
-    }
- 
-    .vinyl-text {
-      color: white;
-      font-size: 0.9rem;
-      font-weight: bold;
-      text-transform: uppercase;
-      pointer-events: none;
-    }
- 
-    /* Add groove lines to make it look more like a vinyl record */
+
+    /* Vinyl grooves */
     .vinyl-outer::after {
       content: '';
       position: absolute;
-      width: 90%;
-      height: 90%;
+      top: 50%;
+      left: 50%;
+      width: 95%;
+      height: 95%;
+      transform: translate(-50%, -50%);
       border-radius: 50%;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      pointer-events: none;
+      background: repeating-radial-gradient(
+        circle at center,
+        transparent 0px,
+        transparent 2px,
+        rgba(33, 33, 33, 0.3) 2px,
+        rgba(33, 33, 33, 0.3) 4px
+      );
     }
- 
-    .vinyl-outer::before {
+
+    /* Label styling */
+    .vinyl-inner {
+      width: 35%;
+      height: 35%;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle at center,
+        #e74c3c 0%,
+        #c0392b 100%
+      );
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      position: relative;
+      z-index: 5;
+    }
+
+    /* Center hole */
+    .vinyl-inner::after {
       content: '';
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #000;
+      border-radius: 50%;
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .vinyl-text {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 3;
+    }
+
+    .vinyl-text svg {
       position: absolute;
       width: 70%;
       height: 70%;
-      border-radius: 50%;
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      transform: rotate(-90deg); /* Adjust rotation for upright text */
+      transition: transform 0.3s ease;
+    }
+
+    .vinyl-text text {
+      fill: white;
+      font-size: 0.9rem;
+      font-weight: bold;
+      letter-spacing: 0.1rem;
+    }
+
+    /* Reflection effect */
+    .vinyl-outer::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.1) 0%,
+        rgba(255, 255, 255, 0) 50%,
+        rgba(255, 255, 255, 0.1) 100%
+      );
+      transform: rotate(-45deg);
       pointer-events: none;
+    }
+
+    /* Hover effects */
+    .vinyl:hover .vinyl-outer {
+      box-shadow: 
+        0 6px 12px rgba(0, 0, 0, 0.4),
+        0 0 4px rgba(255, 255, 255, 0.3);
     }
   </style>
 </head>
 <body>
-    <p>hello</p>
+  <div class="navigation"> 
+      <a href="gallery.html" class="menu-option">Gallery</a>
+      <a href="videoarchive.html" class="menu-option">Video Archive</a>
+      <a href="playlists.html" class="menu-option">Playlists</a>
+      <a href="bsjcrecs.html" class="menu-option">BSJC's Recs</a>
+      <a href="radio.html" class="menu-option">Radio</a>
+  </div>
+
+  <div class="content">
+    <p class="bio">Welcome! We are Bocconi Students Jazz and Classical, an association full of music lovers, musicians, and creatives.</p>
+    <a href="index.html" class="vinyl"> <!-- Made vinyl button link to home -->
+      <div class="vinyl-outer">
+        <div class="vinyl-inner"></div>
+        <div class="vinyl-text">
+          <svg viewBox="0 0 100 100">
+            <path id="curve1" d="M 50, 50 m -40, 0 a 40,40 0 1,1 80,0 a 40,40 0 1,1 -80,0" />
+            <text>
+              <textPath href="#curve1" startOffset="50%" text-anchor="middle">Home</textPath>
+            </text>
+          </svg>
+        </div>
+      </div>
+    </a>
+  </div>
 </body>
 </html>
+
+
+
+
+
+
+
