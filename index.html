@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Spinning Vinyl Menu</title>
+  <title>Simple Menu</title>
   <link href="https://fonts.googleapis.com/css2?family=Sigmar+One&display=swap" rel="stylesheet">
   <style>
     body {
@@ -11,15 +11,11 @@
       padding: 0;
       min-height: 100vh;
       display: flex;
-      background-color: #fef3c7;
+      background-color: #5499c7;
       font-family: 'Sigmar One', cursive;
       overflow-x: hidden;
-    }
-
-    .container {
-      display: flex;
-      width: 100%;
-      padding: 2rem;
+      align-items: center;
+      justify-content: center;
     }
 
     /* Left side with BSJC letters */
@@ -33,7 +29,7 @@
       flex-direction: column;
       justify-content: center;
       padding-left: 2rem;
-      background-color: #fef3c7;
+      background-color: #5499c7;
       z-index: 2;
     }
 
@@ -47,163 +43,42 @@
       font-size: 12rem;
       font-weight: bold;
       text-transform: uppercase;
-      line-height: 0.6;
+      line-height: 0.8;
       margin: 0;
-      color: #1a1a1a;
+      color: white;
     }
 
-    .small-text {
-      font-size: 3rem;
-      margin: 0;
-      padding-left: 0.5rem;
-      color: #4a4a4a;
-    }
-
-    /* Right side content area */
-    .content-area {
-      margin-left: 200px;
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-      min-height: 100vh;
-    }
-
-    /* Menu container styling */
-    .menu-container {
-      display: flex;
-      gap: 2rem;
-      padding: 2rem;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .vinyl {
-      position: relative;
-      width: 200px;
-      height: 200px;
+    /* Menu link styling */
+    .menu-link {
+      color: white;
+      font-size: 2rem;
+      text-decoration: none;
       cursor: pointer;
-      transition: transform 1s ease-in-out;
-      perspective: 1000px;
+      margin-top: 1rem;
+      transition: color 0.3s;
     }
 
-    .vinyl-outer {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      border-radius: 50%;
-      background: radial-gradient(
-        circle at center,
-        #000000 0%,
-        #171717 40%,
-        #272727 60%,
-        #171717 80%,
-        #000000 100%
-      );
-      display: flex;
-      justify-content: center;
+    .menu-link:hover {
+      color: #e74c3c; /* Change color on hover */
+    }
+
+    /* Menu container */
+    .menu-container {
+      display: none; /* Hidden by default */
+      flex-direction: column;
       align-items: center;
-      overflow: hidden;
-      box-shadow: 
-        0 4px 8px rgba(0, 0, 0, 0.3),
-        0 0 2px rgba(255, 255, 255, 0.2);
+      margin-top: 1rem;
     }
 
-    /* Vinyl grooves */
-    .vinyl-outer::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 95%;
-      height: 95%;
-      transform: translate(-50%, -50%);
-      border-radius: 50%;
-      background: repeating-radial-gradient(
-        circle at center,
-        transparent 0px,
-        transparent 2px,
-        rgba(33, 33, 33, 0.3) 2px,
-        rgba(33, 33, 33, 0.3) 4px
-      );
+    .menu-option {
+      color: white;
+      text-decoration: none;
+      margin: 0.5rem 0;
+      transition: color 0.3s;
     }
 
-    /* Label styling */
-    .vinyl-inner {
-      width: 35%;
-      height: 35%;
-      border-radius: 50%;
-      background: radial-gradient(
-        circle at center,
-        #e74c3c 0%,
-        #c0392b 100%
-      );
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-      position: relative;
-      z-index: 2;
-    }
-
-    /* Center hole */
-    .vinyl-inner::after {
-      content: '';
-      position: absolute;
-      width: 8px;
-      height: 8px;
-      background: #000;
-      border-radius: 50%;
-      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.2);
-    }
-
-    .vinyl-text {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 3;
-    }
-
-    .vinyl-text svg {
-      position: absolute;
-      width: 70%;
-      height: 70%;
-      transform: rotate(0deg);
-      transition: transform 0.3s ease;
-    }
-
-    .vinyl-text text {
-      fill: white;
-      font-size: 0.9rem;
-      font-weight: bold;
-      letter-spacing: 0.1rem;
-    }
-
-    /* Reflection effect */
-    .vinyl-outer::before {
-      content: '';
-      position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
-      background: linear-gradient(
-        45deg,
-        rgba(255, 255, 255, 0.1) 0%,
-        rgba(255, 255, 255, 0) 50%,
-        rgba(255, 255, 255, 0.1) 100%
-      );
-      transform: rotate(-45deg);
-      pointer-events: none;
-    }
-
-    /* Hover effects */
-    .vinyl:hover .vinyl-outer {
-      box-shadow: 
-        0 6px 12px rgba(0, 0, 0, 0.4),
-        0 0 4px rgba(255, 255, 255, 0.3);
+    .menu-option:hover {
+      color: #e74c3c; /* Change color on hover */
     }
   </style>
 </head>
@@ -213,79 +88,47 @@
     <div class="heading">
       <div class="letter-group">
         <div class="big-letter">B</div>
-        <div class="small-text">occoni</div>
       </div>
       <div class="letter-group">
         <div class="big-letter">S</div>
-        <div class="small-text">tudents</div>
       </div>
       <div class="letter-group">
         <div class="big-letter">J</div>
-        <div class="small-text">azz</div>
       </div>
       <div class="letter-group">
         <div class="big-letter">C</div>
-        <div class="small-text">lassical</div>
       </div>
     </div>
 
-    <!-- Right side content area -->
+    <!-- Center content area -->
     <div class="content-area">
-      <nav class="menu-container">
-        <a href="#home" class="vinyl">
-          <div class="vinyl-outer">
-            <div class="vinyl-inner"></div>
-            <div class="vinyl-text">
-              <svg viewBox="0 0 100 100">
-                <path id="curve1" d="M 50, 50 m -40, 0 a 40,40 0 1,1 80,0 a 40,40 0 1,1 -80,0" />
-                <text>
-                  <textPath href="#curve1" startOffset="25%" text-anchor="middle">Home</textPath>
-                </text>
-              </svg>
-            </div>
-          </div>
-        </a>
-
-        <a href="about.html" class="vinyl">
-          <div class="vinyl-outer">
-            <div class="vinyl-inner"></div>
-            <div class="vinyl-text">
-              <svg viewBox="0 0 100 100">
-                <path id="curve2" d="M 50, 50 m -40, 0 a 40,40 0 1,1 80,0 a 40,40 0 1,1 -80,0" />
-                <text>
-                  <textPath href="#curve2" startOffset="25%" text-anchor="middle">About</textPath>
-                </text>
-              </svg>
-            </div>
-          </div>
-        </a>
-
-        <a href="#videos" class="vinyl">
-          <div class="vinyl-outer">
-            <div class="vinyl-inner"></div>
-            <div class="vinyl-text">
-              <svg viewBox="0 0 100 100">
-                <path id="curve3" d="M 50, 50 m -40, 0 a 40,40 0 1,1 80,0 a 40,40 0 1,1 -80,0" />
-                <text>
-                  <textPath href="#curve3" startOffset="25%" text-anchor="middle">Videos</textPath>
-                </text>
-              </svg>
-            </div>
-          </div>
-        </a>
-      </nav>
+      <span class="menu-link" id="menuLink">Menu</span>
+      <div class="menu-container" id="menuContainer">
+        <a href="about.html" class="menu-option">About Us</a>
+        <a href="gallery.html" class="menu-option">Gallery</a>
+        <a href="videoarchive.html" class="menu-option">Video Archive</a>
+        <a href="playlists.html".html" class="menu-option">Playlists</a>
+        <a href="bsjcrecs.html" class="menu-option">BSJC's Recs</a>
+        <a href="radio.html" class="menu-option">Radio</a>
+      </div>
     </div>
   </div>
 
   <script>
-    document.querySelectorAll('.vinyl').forEach(vinyl => {
-      let spinCount = 0;
+    const menuLink = document.getElementById('menuLink');
+    const menuContainer = document.getElementById('menuContainer');
 
-      vinyl.addEventListener('mouseenter', () => {
-        spinCount++;
-        vinyl.style.transform = `rotate(${spinCount * 360}deg)`;
-      });
+    menuLink.addEventListener('click', () => {
+      // Toggle menu visibility
+      if (menuContainer.style.display === 'none' || menuContainer.style.display === '') {
+        menuContainer.style.display = 'flex'; // Show menu
+      } else {
+        menuContainer.style.display = 'none'; // Hide menu
+      }
     });
   </script>
 </body>
 </html>
+
+
+
