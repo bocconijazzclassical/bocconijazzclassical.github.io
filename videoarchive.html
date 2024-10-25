@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Archive | Bocconi Students Jazz and Classical</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sigmar+One&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column; /* Stack items vertically */
+      align-items: center; /* Center items horizontally */
+      background-color: #5499c7; /* Page background color */
+      font-family: 'Sigmar One', cursive;
+      color: white; /* Set text color to white */
+      position: relative; /* Positioning for vinyl graphic */
+    }
+
+    /* Content area styling */
+    .content {
+      flex: 1; /* Allow content area to grow */
+      padding: 2rem; /* Padding for the content area */
+      display: flex;
+      flex-direction: column; /* Stack items vertically */
+      align-items: center; /* Center items */
+      justify-content: flex-start; /* Align items to the top */
+      text-align: center; /* Center text */
+      margin-top: 100px; /* Space from the top */
+    }
+
+    /* Heading styling */
+    h1 {
+      position: absolute; /* Absolute positioning for top placement */
+      top: 50px; /* Space from the top */
+      left: 200px; /* Space from the left */
+      margin: 0; /* No margin */
+    }
+
+    /* Video container styling */
+    .video-container {
+      margin: 3rem 0; /* Space between videos */
+      width: 500%; /* Full width */
+      max-width: 800px; /* Max width for videos */
+      display: flex;
+      flex-direction: column; /* Stack video and description vertically */
+      align-items: center; /* Center items */
+    }
+
+    video {
+      width: 100%; /* Full width */
+      height: auto; /* Maintain aspect ratio */
+      border: none; /* Remove border */
+      border-radius: 0; /* Ensure sharp edges */
+    }
+
+    /* Description styling */
+    p {
+      margin-top: 0.5rem; /* Space above description */
+      font-size: 1rem; /* Font size for description */
+    }
+
+    /* Vinyl styling */
+    .vinyl {
+      position: absolute; /* Position it absolutely */
+      top: 20px; /* Position it towards the top */
+      left: 20px; /* Position it towards the left */
+      width: 150px; /* Adjusted size */
+      height: 150px; /* Adjusted size */
+      cursor: pointer;
+      transition: transform 1s ease-in-out;
+      perspective: 1000px;
+      z-index: 2; /* Ensure vinyl is above the navigation */
+    }
+
+    .vinyl-outer {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle at center,
+        #000000 0%,
+        #171717 40%,
+        #272727 60%,
+        #171717 80%,
+        #000000 100%
+      );
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      box-shadow: 
+        0 4px 8px rgba(0, 0, 0, 0.3),
+        0 0 2px rgba(255, 255, 255, 0.2);
+    }
+
+    /* Vinyl grooves */
+    .vinyl-outer::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 95%;
+      height: 95%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: repeating-radial-gradient(
+        circle at center,
+        transparent 0px,
+        transparent 2px,
+        rgba(33, 33, 33, 0.3) 2px,
+        rgba(33, 33, 33, 0.3) 4px
+      );
+    }
+
+    /* Label styling */
+    .vinyl-inner {
+      width: 35%;
+      height: 35%;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle at center,
+        #e74c3c 0%,
+        #c0392b 100%
+      );
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      position: relative;
+      z-index: 5;
+    }
+
+    /* Center hole */
+    .vinyl-inner::after {
+      content: '';
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #000;
+      border-radius: 50%;
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .vinyl-text {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 3;
+    }
+
+    .vinyl-text svg {
+      position: absolute;
+      width: 70%;
+      height: 70%;
+      transform: rotate(-90deg); /* Adjust rotation for upright text */
+      transition: transform 0.3s ease;
+    }
+
+    .vinyl-text text {
+      fill: white;
+      font-size: 0.9rem;
+      font-weight: bold;
+      letter-spacing: 0.1rem;
+    }
+
+    /* Navigation buttons styling */
+    .navigation {
+      display: flex;
+      gap: 1.5rem;
+      position: fixed; /* Fix to bottom of page */
+      bottom: 50px; /* Increased space from the bottom */
+      left: 50%; /* Center horizontally */
+      transform: translateX(-50%); /* Adjust for centering */
+      z-index: 3;
+      opacity: 0; /* Start hidden */
+      transition: opacity 0.3s; /* Optional: smooth transition */
+      pointer-events: none; /* Prevent interaction when hidden */
+    }
+
+    .navigation a {
+      color: white; /* Set text color to white */
+      text-decoration: none;
+      font-size: 1.2rem;
+      transition: color 0.3s;
+    }
+
+    .navigation a:hover {
+      color: #e74c3c; /* Change color on hover */
+    }
+
+    /* Class to show navigation */
+    .navigation.visible {
+      opacity: 1; /* Show when scrolled */
+      pointer-events: auto; /* Enable interaction */
+    }
+
+    /* Add more space below the content */
+    body {
+      padding-bottom: 100px; /* Add bottom padding */
+    }
+  </style>
+</head>
+<body>
+
+  <a href="index.html" class="vinyl"> <!-- Made vinyl button link to home -->
+    <div class="vinyl-outer">
+      <div class="vinyl-inner"></div>
+      <div class="vinyl-text">
+        <svg viewBox="0 0 100 100">
+          <path id="curve1" d="M 50, 50 m -40, 0 a 40,40 0 1,1 80,0 a 40,40 0 1,1 -80,0" />
+          <text>
+            <textPath href="#curve1" startOffset="50%" text-anchor="middle">Home</textPath>
+          </text>
+        </svg>
+      </div>
+    </div>
+  </a>
+
+  <div class="content">
+    <h1>Video Archive</h1> <!-- Heading positioned at the top -->
+
+    <div class="video-container">
+      <video id="videoPlayer" controls>
+        <source id="videoSource" src="videos/event1.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+      </video>
+      <p id="videoDescription">Event 1 - Description</p> <!-- Description moved under the video -->
+      <div class="video-navigation">
+        <button id="prevBtn">Back</button>
+        <button id="nextBtn">Next</button>
+      </div>
+    </div>
+    <!-- Add more videos as needed -->
+  </div>
+
+  <div class="navigation" id="navigation"> 
+    <a href="about.html" class="menu-option">About Us</a>
+    <a href="gallery.html" class="menu-option">Gallery</a>
+    <a href="bsjcrecs.html" class="menu-option">BSJC's Recs</a>
+    <a href="playlists.html" class="menu-option">Playlists</a>
+    <a href="radio.html" class="menu-option">Radio</a>
+  </div>
+
+  <script>
+    // JavaScript for video navigation
+    const videos = [
+      { src: 'videos/event1.mp4', description: 'Event 1 - Description' },
+      { src: 'videos/event2.mp4', description: 'Event 2 - Description' },
+      { src: 'videos/event3.mp4', description: 'Event 3 - Description' },
+      // Add more video objects as needed
+    ];
+
+    let currentIndex = 0;
+
+    const videoPlayer = document.getElementById('videoPlayer');
+    const videoSource = document.getElementById('videoSource');
+    const videoDescription = document.getElementById('videoDescription');
+    
+    function updateVideo() {
+      videoSource.src = videos[currentIndex].src;
+      videoDescription.textContent = videos[currentIndex].description;
+      videoPlayer.load(); // Load the new video
+    }
+
+    document.getElementById('prevBtn').addEventListener('click', () => {
+      currentIndex = (currentIndex - 1 + videos.length) % videos.length; // Loop back to the end
+      updateVideo();
+    });
+
+    document.getElementById('nextBtn').addEventListener('click', () => {
+      currentIndex = (currentIndex + 1) % videos.length; // Loop to the start
+      updateVideo();
+    });
+
+    // Navigation bar visibility
+    const navigation = document.getElementById('navigation');
+    let scrollTimeout;
+    
+    window.addEventListener('scroll', () => {
+      clearTimeout(scrollTimeout);
+      navigation.classList.add('visible');
+      scrollTimeout = setTimeout(() => {
+        navigation.classList.remove('visible');
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
