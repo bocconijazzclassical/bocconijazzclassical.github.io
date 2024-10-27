@@ -13,7 +13,7 @@
             display: flex;
             flex-direction: column; /* Stack items vertically */
             align-items: center; /* Center items horizontally */
-            background-color: #f7dc6f   ; /* Page background color */
+            background-color: #c0392b    ; /* Page background color */
             font-family: 'Sigmar One', cursive;
             color: white; /* Set text color to white */
             position: relative; /* Positioning for vinyl graphic */
@@ -59,6 +59,20 @@
             align-items: center; /* Center contents */
             z-index: 10; /* Above other content */
         }
+
+        .lightbox {
+    display: none;
+    position: fixed;
+    z-index: 10;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #c0392b; /* Pastel blue background for lightbox */
+    justify-content: center;
+    align-items: center;
+}
+
 
         .lightbox-content {
             max-width: 90%; /* Max width of image */
