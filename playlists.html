@@ -11,52 +11,68 @@
       padding: 0;
       min-height: 100vh;
       display: flex;
-      flex-direction: column; /* Stack items vertically */
-      align-items: center; /* Center items horizontally */
-      background-color: #1e8449 ; /* Page background color */
+      flex-direction: column;
+      align-items: center;
+      background-color: #1e8449;
       font-family: 'Sigmar One', cursive;
-      color: white; /* Set text color to white */
-      position: relative; /* Positioning for vinyl graphic */
+      color: white;
+      position: relative;
     }
 
-    /* Content area styling */
     .content {
-      flex: 1; /* Allow content area to grow */
-      padding: 2rem; /* Padding for the content area */
+      flex: 1;
+      padding: 2rem;
       display: flex;
-      flex-direction: column; /* Stack items vertically */
-      align-items: center; /* Center items */
-      justify-content: flex-start; /* Align items to the top */
-      text-align: center; /* Center text */
-      margin-top: 100px; /* Space from the top */
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      text-align: center;
+      margin-top: 100px;
+      width: 100%;
+      max-width: 1600px;
     }
 
-    /* Heading styling */
     h1 {
-      margin: 0; /* No margin */
+      margin: 0 0 2rem 0;
     }
 
-    /* Video container styling */
+    /* New grid container styling */
+    .playlists-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(300px, 1fr));
+      gap: rem;
+      width: 100%;
+      padding: 0 2rem;
+    }
+
     .spotify-container {
-      margin: 3rem 0; /* Space between videos */
-      width: 100%; /* Full width */
-      max-width: 800px; /* Max width for videos */
-      display: flex;
-      flex-direction: column; /* Stack video and description vertically */
-      align-items: center; /* Center items */
+      width: 100%;
+      max-width: 100%;
     }
 
-    /* Vinyl styling */
+    .spotify-container h3 {
+      margin-bottom: 1rem;
+    }
+
+    /* Responsive grid for smaller screens */
+    @media (max-width: 1200px) {
+      .playlists-grid {
+        grid-template-columns: 1fr;
+        max-width: 800px;
+      }
+    }
+
+    /* Rest of your existing styles */
     .vinyl {
-      position: absolute; /* Position it absolutely */
-      top: 20px; /* Position it towards the top */
-      left: 20px; /* Position it towards the left */
-      width: 150px; /* Adjusted size */
-      height: 150px; /* Adjusted size */
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 150px;
+      height: 150px;
       cursor: pointer;
       transition: transform 1s ease-in-out;
       perspective: 1000px;
-      z-index: 2; /* Ensure vinyl is above the navigation */
+      z-index: 2;
     }
 
     .vinyl-outer {
@@ -81,7 +97,6 @@
         0 0 2px rgba(255, 255, 255, 0.2);
     }
 
-    /* Vinyl grooves */
     .vinyl-outer::after {
       content: '';
       position: absolute;
@@ -100,7 +115,6 @@
       );
     }
 
-    /* Label styling */
     .vinyl-inner {
       width: 35%;
       height: 35%;
@@ -118,7 +132,6 @@
       z-index: 5;
     }
 
-    /* Center hole */
     .vinyl-inner::after {
       content: '';
       position: absolute;
@@ -143,7 +156,7 @@
       position: absolute;
       width: 70%;
       height: 70%;
-      transform: rotate(-90deg); /* Adjust rotation for upright text */
+      transform: rotate(-90deg);
       transition: transform 0.3s ease;
     }
 
@@ -154,45 +167,41 @@
       letter-spacing: 0.1rem;
     }
 
-    /* Navigation buttons styling */
     .navigation {
       display: flex;
       gap: 1.5rem;
-      position: fixed; /* Fix to bottom of page */
-      bottom: 50px; /* Increased space from the bottom */
-      left: 50%; /* Center horizontally */
-      transform: translateX(-50%); /* Adjust for centering */
+      position: fixed;
+      bottom: 50px;
+      left: 50%;
+      transform: translateX(-50%);
       z-index: 3;
-      opacity: 0; /* Start hidden */
-      transition: opacity 0.3s; /* Optional: smooth transition */
-      pointer-events: none; /* Prevent interaction when hidden */
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
     }
 
     .navigation a {
-      color: white; /* Set text color to white */
+      color: white;
       text-decoration: none;
       font-size: 1.2rem;
       transition: color 0.3s;
     }
 
     .navigation a:hover {
-      color: #e74c3c; /* Change color on hover */
+      color: #e74c3c;
     }
 
-    /* Class to show navigation */
     .navigation.visible {
-      opacity: 1; /* Show when scrolled */
-      pointer-events: auto; /* Enable interaction */
+      opacity: 1;
+      pointer-events: auto;
     }
 
-    /* Add more space below the content */
     body {
-      padding-bottom: 100px; /* Add bottom padding */
+      padding-bottom: 100px;
     }
   </style>
 </head>
 <body>
-
     <a href="index.html" class="vinyl">
       <div class="vinyl-outer">
         <div class="vinyl-inner"></div>
@@ -208,11 +217,28 @@
     </a>
   
     <div class="content">
-      <h1>Spotify Profile</h1>
-  
-      <div class="spotify-container">
-        <iframe src="https://open.spotify.com/embed/user/YOUR_SPOTIFY_USER_ID" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
-        <iframe src="https://open.spotify.com/embed/playlist/YOUR_PLAYLIST_ID" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+      <h1>BSJC's Playlists</h1>
+      
+      <div class="playlists-grid">
+        <div class="spotify-container">
+          <h3>Music Dump 2023-24 Sem2!</h3>
+          <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/5DoSNtB1JPoPcbBe7xJoOG?utm_source=generator" width="60%" height="422" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
+
+        <div class="spotify-container">
+          <h3>Jazz Hop</h3>
+          <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/76md34pIMCA9USiF65zAnN?utm_source=generator" width="60%" height="422" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
+
+        <div class="spotify-container">
+          <h3>Sunny Cat Jazz</h3>
+          <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/00o4qMrc7TecazhrTvd1ct?utm_source=generator" width="60%" height="422" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
+
+        <div class="spotify-container">
+          <h3>Bossa</h3>
+          <iframe style="border-radius:12px" src="https://open.spotify.com/embed/playlist/30hJK38x8Bg35B0zSKtICY?utm_source=generator" width="60%" height="422" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </div>
       </div>
     </div>
   
@@ -225,7 +251,6 @@
     </div>
   
     <script>
-      // Add this script to show navigation on scroll
       window.onscroll = function() {
         const navigation = document.getElementById('navigation');
         if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
@@ -235,9 +260,5 @@
         }
       };
     </script>
-
-  </body>
+</body>
 </html>
-
-
-
