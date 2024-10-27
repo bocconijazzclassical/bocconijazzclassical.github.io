@@ -1,53 +1,243 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Road Work Ahead</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column; /* Stack items vertically */
-            align-items: center; /* Center items horizontally */
-            justify-content: center; /* Center items vertically */
-            background-color: #5499c7;
-            font-family: 'Sigmar One', cursive;
-            color: white; /* Set text color to white */
-            text-align: center; /* Center text */
-        }
-        img {
-            max-width: 90%; /* Make the image responsive */
-            height: auto; /* Maintain aspect ratio */
-            border-radius: 10px; /* Rounded corners for the image */
-        }
-        h1 {
-            font-size: 4em; /* Large font size for the heading */
-            margin: 20px 0; /* Margin above and below */
-        }
-        a {
-            font-size: 2em; /* Large font size for the link */
-            color: yellow; /* Link color */
-            text-decoration: none; /* Remove underline */
-            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-            padding: 10px 20px; /* Padding for the link */
-            border-radius: 5px; /* Rounded corners for the link */
-            transition: background-color 0.3s; /* Transition effect */
-        }
-        a:hover {
-            background-color: rgba(255, 255, 255, 0.3); /* Change background on hover */
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spotify Profile | Bocconi Students Jazz and Classical</title>
+  <link href="https://fonts.googleapis.com/css2?family=Sigmar+One&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column; /* Stack items vertically */
+      align-items: center; /* Center items horizontally */
+      background-color: #5499c7; /* Page background color */
+      font-family: 'Sigmar One', cursive;
+      color: white; /* Set text color to white */
+      position: relative; /* Positioning for vinyl graphic */
+    }
+
+    /* Content area styling */
+    .content {
+      flex: 1; /* Allow content area to grow */
+      padding: 2rem; /* Padding for the content area */
+      display: flex;
+      flex-direction: column; /* Stack items vertically */
+      align-items: center; /* Center items */
+      justify-content: flex-start; /* Align items to the top */
+      text-align: center; /* Center text */
+      margin-top: 100px; /* Space from the top */
+    }
+
+    /* Heading styling */
+    h1 {
+      margin: 0; /* No margin */
+    }
+
+    /* Video container styling */
+    .spotify-container {
+      margin: 3rem 0; /* Space between videos */
+      width: 100%; /* Full width */
+      max-width: 800px; /* Max width for videos */
+      display: flex;
+      flex-direction: column; /* Stack video and description vertically */
+      align-items: center; /* Center items */
+    }
+
+    /* Vinyl styling */
+    .vinyl {
+      position: absolute; /* Position it absolutely */
+      top: 20px; /* Position it towards the top */
+      left: 20px; /* Position it towards the left */
+      width: 150px; /* Adjusted size */
+      height: 150px; /* Adjusted size */
+      cursor: pointer;
+      transition: transform 1s ease-in-out;
+      perspective: 1000px;
+      z-index: 2; /* Ensure vinyl is above the navigation */
+    }
+
+    .vinyl-outer {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle at center,
+        #000000 0%,
+        #171717 40%,
+        #272727 60%,
+        #171717 80%,
+        #000000 100%
+      );
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+      box-shadow: 
+        0 4px 8px rgba(0, 0, 0, 0.3),
+        0 0 2px rgba(255, 255, 255, 0.2);
+    }
+
+    /* Vinyl grooves */
+    .vinyl-outer::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 95%;
+      height: 95%;
+      transform: translate(-50%, -50%);
+      border-radius: 50%;
+      background: repeating-radial-gradient(
+        circle at center,
+        transparent 0px,
+        transparent 2px,
+        rgba(33, 33, 33, 0.3) 2px,
+        rgba(33, 33, 33, 0.3) 4px
+      );
+    }
+
+    /* Label styling */
+    .vinyl-inner {
+      width: 35%;
+      height: 35%;
+      border-radius: 50%;
+      background: radial-gradient(
+        circle at center,
+        #e74c3c 0%,
+        #c0392b 100%
+      );
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+      position: relative;
+      z-index: 5;
+    }
+
+    /* Center hole */
+    .vinyl-inner::after {
+      content: '';
+      position: absolute;
+      width: 4px;
+      height: 4px;
+      background: #000;
+      border-radius: 50%;
+      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.2);
+    }
+
+    .vinyl-text {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 3;
+    }
+
+    .vinyl-text svg {
+      position: absolute;
+      width: 70%;
+      height: 70%;
+      transform: rotate(-90deg); /* Adjust rotation for upright text */
+      transition: transform 0.3s ease;
+    }
+
+    .vinyl-text text {
+      fill: white;
+      font-size: 0.9rem;
+      font-weight: bold;
+      letter-spacing: 0.1rem;
+    }
+
+    /* Navigation buttons styling */
+    .navigation {
+      display: flex;
+      gap: 1.5rem;
+      position: fixed; /* Fix to bottom of page */
+      bottom: 50px; /* Increased space from the bottom */
+      left: 50%; /* Center horizontally */
+      transform: translateX(-50%); /* Adjust for centering */
+      z-index: 3;
+      opacity: 0; /* Start hidden */
+      transition: opacity 0.3s; /* Optional: smooth transition */
+      pointer-events: none; /* Prevent interaction when hidden */
+    }
+
+    .navigation a {
+      color: white; /* Set text color to white */
+      text-decoration: none;
+      font-size: 1.2rem;
+      transition: color 0.3s;
+    }
+
+    .navigation a:hover {
+      color: #e74c3c; /* Change color on hover */
+    }
+
+    /* Class to show navigation */
+    .navigation.visible {
+      opacity: 1; /* Show when scrolled */
+      pointer-events: auto; /* Enable interaction */
+    }
+
+    /* Add more space below the content */
+    body {
+      padding-bottom: 100px; /* Add bottom padding */
+    }
+  </style>
 </head>
 <body>
-    <h1>🚧 ROAD WORK AHEAD! 🚧</h1>
-    <img src="./assets/roadworkahead.jpeg" alt="Road Work Ahead">
-    <h2> 😂 </h2>
-    <a href="index.html">BACK TO SAFETY 🚀</a>
 
-    <!-- Add a funny GIF here -->
-    <div class="tenor-gif-embed" data-postid="4325800" data-share-method="host" data-aspect-ratio="3.3369" data-width="80%"><a href="https://tenor.com/view/the-s-impsons-bush-homer-simpsons-homer-hiding-gif-4325800">Homer Disappearing Into Bush - The Simpsons GIF</a>from <a href="https://tenor.com/search/the+s+impsons-gifs">The S Impsons GIFs</a></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
-</body>
+    <a href="index.html" class="vinyl">
+      <div class="vinyl-outer">
+        <div class="vinyl-inner"></div>
+        <div class="vinyl-text">
+          <svg viewBox="0 0 100 100">
+            <path id="curve1" d="M 50, 50 m -40, 0 a 40,40 0 1,1 80,0 a 40,40 0 1,1 -80,0" />
+            <text>
+              <textPath href="#curve1" startOffset="50%" text-anchor="middle">Home</textPath>
+            </text>
+          </svg>
+        </div>
+      </div>
+    </a>
+  
+    <div class="content">
+      <h1>Spotify Profile</h1>
+  
+      <div class="spotify-container">
+        <iframe src="https://open.spotify.com/embed/user/YOUR_SPOTIFY_USER_ID" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+        <iframe src="https://open.spotify.com/embed/playlist/YOUR_PLAYLIST_ID" width="300" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+      </div>
+    </div>
+  
+    <div class="navigation" id="navigation"> 
+      <a href="about.html" class="menu-option">About Us</a>
+      <a href="gallery.html" class="menu-option">Gallery</a>
+      <a href="videoarchive.html" class="menu-option">Video Archive</a>
+      <a href="bsjcrecs.html" class="menu-option">BSJC's Recs</a>
+      <a href="radio.html" class="menu-option">Radio</a>
+    </div>
+  
+    <script>
+      // Add this script to show navigation on scroll
+      window.onscroll = function() {
+        const navigation = document.getElementById('navigation');
+        if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
+          navigation.classList.add('visible');
+        } else {
+          navigation.classList.remove('visible');
+        }
+      };
+    </script>
+
+  </body>
 </html>
+
+
+

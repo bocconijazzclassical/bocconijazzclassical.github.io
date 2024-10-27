@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Road Work Ahead</title>
+    <title>Photo Gallery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sigmar+One&display=swap" rel="stylesheet">
     <style>
         body {
             margin: 0;
@@ -12,42 +13,292 @@
             display: flex;
             flex-direction: column; /* Stack items vertically */
             align-items: center; /* Center items horizontally */
-            justify-content: center; /* Center items vertically */
-            background-color: #5499c7;
+            background-color: #5499c7; /* Page background color */
             font-family: 'Sigmar One', cursive;
             color: white; /* Set text color to white */
+            position: relative; /* Positioning for vinyl graphic */
+        }
+
+        h1 {
+            margin: 2rem 0; /* Margin around the heading */
+        }
+
+        section {
+            margin: 1.5rem 0; /* Space between sections */
             text-align: center; /* Center text */
         }
-        img {
-            max-width: 90%; /* Make the image responsive */
+
+        .gallery {
+            display: flex; /* Use flexbox for gallery */
+            flex-wrap: wrap; /* Allow wrapping */
+            justify-content: center; /* Center items */
+        }
+
+        .gallery img {
+            width: 300px; /* Set image width */
             height: auto; /* Maintain aspect ratio */
-            border-radius: 10px; /* Rounded corners for the image */
+            margin: 0.5rem; /* Margin around images */
+            cursor: pointer; /* Pointer cursor for images */
+            transition: transform 0.3s; /* Smooth scaling effect */
         }
-        h1 {
-            font-size: 4em; /* Large font size for the heading */
-            margin: 20px 0; /* Margin above and below */
+
+        .gallery img:hover {
+            transform: scale(1.05); /* Scale effect on hover */
         }
-        a {
-            font-size: 2em; /* Large font size for the link */
-            color: yellow; /* Link color */
-            text-decoration: none; /* Remove underline */
-            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-            padding: 10px 20px; /* Padding for the link */
-            border-radius: 5px; /* Rounded corners for the link */
-            transition: background-color 0.3s; /* Transition effect */
+
+        /* Lightbox styles */
+        .lightbox {
+            display: none; /* Hidden by default */
+            position: fixed; /* Fixed position */
+            top: 0; /* Align to top */
+            left: 0; /* Align to left */
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+            justify-content: center; /* Center contents */
+            align-items: center; /* Center contents */
+            z-index: 10; /* Above other content */
         }
-        a:hover {
-            background-color: rgba(255, 255, 255, 0.3); /* Change background on hover */
+
+        .lightbox-content {
+            max-width: 90%; /* Max width of image */
+            max-height: 90%; /* Max height of image */
+        }
+
+        /* Vinyl button styling */
+        .vinyl {
+            position: absolute; /* Position it absolutely */
+            top: 20px; /* Position it towards the top */
+            left: 20px; /* Position it towards the left */
+            width: 150px; /* Adjusted size */
+            height: 150px; /* Adjusted size */
+            cursor: pointer;
+            transition: transform 1s ease-in-out;
+            perspective: 1000px;
+            z-index: 2; /* Ensure vinyl is above the navigation */
+        }
+
+        .vinyl-outer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: radial-gradient(
+                circle at center,
+                #000000 0%,
+                #171717 40%,
+                #272727 60%,
+                #171717 80%,
+                #000000 100%
+            );
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            box-shadow: 
+                0 4px 8px rgba(0, 0, 0, 0.3),
+                0 0 2px rgba(255, 255, 255, 0.2);
+        }
+
+        /* Vinyl grooves */
+        .vinyl-outer::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 95%;
+            height: 95%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            background: repeating-radial-gradient(
+                circle at center,
+                transparent 0px,
+                transparent 2px,
+                rgba(33, 33, 33, 0.3) 2px,
+                rgba(33, 33, 33, 0.3) 4px
+            );
+        }
+
+        /* Label styling */
+        .vinyl-inner {
+            width: 35%;
+            height: 35%;
+            border-radius: 50%;
+            background: radial-gradient(
+                circle at center,
+                #e74c3c 0%,
+                #c0392b 100%
+            );
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            position: relative;
+            z-index: 5;
+        }
+
+        /* Center hole */
+        .vinyl-inner::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #000;
+            border-radius: 50%;
+            box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.2);
+        }
+
+        .vinyl-text {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 3;
+        }
+
+        .vinyl-text svg {
+            position: absolute;
+            width: 70%;
+            height: 70%;
+            transform: rotate(-90deg); /* Adjust rotation for upright text */
+            transition: transform 0.3s ease;
+        }
+
+        .vinyl-text text {
+            fill: white;
+            font-size: 0.9rem;
+            font-weight: bold;
+            letter-spacing: 0.1rem;
+        }
+
+        /* Navigation buttons styling */
+        .navigation {
+            display: flex;
+            gap: 1.5rem;
+            position: fixed; /* Fix to bottom of page */
+            bottom: 50px; /* Increased space from the bottom */
+            left: 50%; /* Center horizontally */
+            transform: translateX(-50%); /* Adjust for centering */
+            z-index: 3;
+            opacity: 0; /* Start hidden */
+            transition: opacity 0.3s; /* Optional: smooth transition */
+            pointer-events: none; /* Prevent interaction when hidden */
+        }
+
+        .navigation a {
+            color: white; /* Set text color to white */
+            text-decoration: none;
+            font-size: 1.2rem;
+            transition: color 0.3s;
+        }
+
+        .navigation a:hover {
+            color: #e74c3c; /* Change color on hover */
+        }
+
+        /* Class to show navigation */
+        .navigation.visible {
+            opacity: 1; /* Show when scrolled */
+            pointer-events: auto; /* Enable interaction */
+        }
+
+        /* Add more space below the content */
+        body {
+            padding-bottom: 100px; /* Add bottom padding */
         }
     </style>
 </head>
 <body>
-    <h1>🚧 ROAD WORK AHEAD! 🚧</h1>
-    <img src="./assets/roadworkahead.jpeg" alt="Road Work Ahead">
-    <h2> 😂 </h2>
-    <a href="index.html">BACK TO SAFETY 🚀</a>
 
-    <!-- Add a funny GIF here -->
-    <div class="tenor-gif-embed" data-postid="4325800" data-share-method="host" data-aspect-ratio="3.3369" data-width="80%"><a href="https://tenor.com/view/the-s-impsons-bush-homer-simpsons-homer-hiding-gif-4325800">Homer Disappearing Into Bush - The Simpsons GIF</a>from <a href="https://tenor.com/search/the+s+impsons-gifs">The S Impsons GIFs</a></div> <script type="text/javascript" async src="https://tenor.com/embed.js"></script>
+    <a href="index.html" class="vinyl">
+        <div class="vinyl-outer">
+            <div class="vinyl-inner"></div>
+            <div class="vinyl-text">
+                <svg viewBox="0 0 100 100">
+                    <path id="curve1" d="M 50, 50 m -40, 0 a 40,40 0 1,1 80,0 a 40,40 0 1,1 -80,0" />
+                    <text>
+                        <textPath href="#curve1" startOffset="50%" text-anchor="middle">Home</textPath>
+                    </text>
+                </svg>
+            </div>
+        </div>
+    </a>
+
+    <h1>Photo Gallery</h1>
+
+    <section>
+        <h2>Summer in NYC</h2>
+        <div class="gallery">
+            <img src="./assets/summer in nyc/photo1.jpg" alt="Summer in NYC Photo 1">
+            <img src="./assets/summer in nyc/photo2.jpg" alt="Summer in NYC Photo 2">
+            <img src="./assets/summer in nyc/photo3.jpg" alt="Summer in NYC Photo 3">
+            <!-- Add more images as needed -->
+        </div>
+    </section>
+
+    <section>
+        <h2>Umbria</h2>
+        <div class="gallery">
+            <img src="./assets/umbria/photo1.jpg" alt="Umbria Photo 1">
+            <img src="./assets/umbria/photo2.jpg" alt="Umbria Photo 2">
+            <img src="./assets/umbria/photo3.jpg" alt="Umbria Photo 3">
+            <!-- Add more images as needed -->
+        </div>
+    </section>
+
+    <section>
+        <h2>Portraits of Friends</h2>
+        <div class="gallery">
+            <img src="./assets/portraits/ella_portrait_1.jpeg" alt="Portrait of Ella">
+            <img src="./assets/portraits/photo2.jpg" alt="Portrait of Friend 2">
+            <img src="./assets/portraits/photo3.jpg" alt="Portrait of Friend 3">
+            <!-- Add more images as needed -->
+        </div>
+    </section>
+
+    <!-- Lightbox Modal -->
+    <div id="lightbox" class="lightbox" onclick="closeLightbox(event)">
+        <img class="lightbox-content" id="lightbox-img">
+    </div>
+
+    <div class="navigation" id="nav-bar">
+        <a href="about.html">About Us</a>
+        <a href="videoarchive.html">Video Archive</a>
+        <a href="bsjcrecs.html">BSJC's Recs</a>
+        <a href="playlists.html">Playlists</a>
+        <a href="radio.html">Radio</a>
+    </div>
+
+    <script>
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const images = document.querySelectorAll('.gallery img');
+
+        images.forEach((image) => {
+            image.addEventListener('click', () => {
+                lightbox.style.display = 'flex';
+                lightboxImg.src = image.src;
+            });
+        });
+
+        function closeLightbox(event) {
+            if (event.target !== lightboxImg) {
+                lightbox.style.display = 'none';
+            }
+        }
+
+        // Show navigation bar when scrolled down
+        window.onscroll = function() {
+            const nav = document.getElementById('nav-bar');
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                nav.classList.add('visible');
+            } else {
+                nav.classList.remove('visible');
+            }
+        };
+    </script>
 </body>
 </html>
+
