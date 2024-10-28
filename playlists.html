@@ -13,9 +13,9 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      background-color: #1e8449;
+      background-color: white;
       font-family: 'Sigmar One', cursive;
-      color: white;
+      color: black;
       position: relative;
     }
 
@@ -167,38 +167,42 @@
       letter-spacing: 0.1rem;
     }
 
-    .navigation {
-      display: flex;
-      gap: 1.5rem;
-      position: fixed;
-      bottom: 50px;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 3;
-      opacity: 0;
-      transition: opacity 0.3s;
-      pointer-events: none;
-    }
+   /* Navigation buttons styling */
+.navigation {
+  display: flex;
+  gap: 1.5rem;
+  position: fixed; /* Fix to bottom of page */
+  bottom: 50px; /* Increased space from the bottom */
+  left: 50%; /* Center horizontally */
+  transform: translateX(-50%); /* Adjust for centering */
+  z-index: 3;
+  opacity: 0; /* Start hidden */
+  transition: opacity 0.3s; /* Optional: smooth transition */
+  pointer-events: none; /* Prevent interaction when hidden */
+}
 
-    .navigation a {
-      color: white;
-      text-decoration: none;
-      font-size: 1.2rem;
-      transition: color 0.3s;
-    }
+.navigation a {
+  color: white; /* Set text color to white */
+  text-decoration: none;
+  font-size: 1.2rem;
+  transition: color 0.3s;
+}
 
-    .navigation a:hover {
-      color: #e74c3c;
-    }
+.navigation a:hover {
+  color: #e74c3c; /* Change color on hover */
+}
 
-    .navigation.visible {
-      opacity: 1;
-      pointer-events: auto;
-    }
+/* Class to show navigation */
+.navigation.visible {
+  opacity: 1; /* Show when scrolled */
+  pointer-events: auto; /* Enable interaction */
+}
 
-    body {
-      padding-bottom: 100px;
-    }
+/* Add more space below the content */
+body {
+  padding-bottom: 100px; /* Add bottom padding */
+}
+
   </style>
 </head>
 <body>
@@ -242,23 +246,24 @@
       </div>
     </div>
   
-    <div class="navigation" id="navigation"> 
-      <a href="about.html" class="menu-option">About Us</a>
-      <a href="gallery.html" class="menu-option">Gallery</a>
-      <a href="videoarchive.html" class="menu-option">Video Archive</a>
-      <a href="bsjcrecs.html" class="menu-option">BSJC's Recs</a>
-      <a href="radio.html" class="menu-option">Radio</a>
-    </div>
+      <!-- Navigation buttons at the bottom -->
+  <div class="navigation" id="navigation">
+    <a href="about.html" class="menu-option">About Us</a>
+    <a href="gallery.html" class="menu-option">Gallery</a>
+    <a href="videoarchive.html" class="menu-option">Video Archive</a>
+    <a href="bsjcrecs.html" class="menu-option">BSJC's Recs</a>
+    <a href="radio.html" class="menu-option">Radio</a>
+  </div>
   
-    <script>
-      window.onscroll = function() {
-        const navigation = document.getElementById('navigation');
-        if (document.body.scrollTop > 50 || document.documentElement.scrollTop > 50) {
-          navigation.classList.add('visible');
-        } else {
-          navigation.classList.remove('visible');
-        }
-      };
-    </script>
+  <script>
+    window.addEventListener('scroll', function() {
+      const navigation = document.getElementById('navigation');
+      if (window.scrollY + window.innerHeight >= document.body.offsetHeight) {
+        navigation.classList.add('visible'); // Show navigation
+      } else {
+        navigation.classList.remove('visible'); // Hide navigation
+      }
+    });
+  </script>
 </body>
 </html>
