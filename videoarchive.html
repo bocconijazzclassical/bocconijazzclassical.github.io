@@ -13,7 +13,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      background-color: #eb984e ;
+      background-color: #eb984e;
       font-family: 'Sigmar One', cursive;
       color: white;
       position: relative;
@@ -44,6 +44,27 @@
       display: flex;
       flex-direction: column;
       align-items: center;
+    }
+
+    .video-navigation {
+      margin-top: 1rem;
+      display: flex;
+      gap: 1rem;
+    }
+
+    button {
+      padding: 0.5rem 1rem;
+      font-family: 'Sigmar One', cursive;
+      background-color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #e74c3c;
+      color: white;
     }
 
     p {
@@ -101,16 +122,6 @@
       z-index: 5;
     }
 
-    .vinyl-inner::after {
-      content: '';
-      position: absolute;
-      width: 4px;
-      height: 4px;
-      background: #000;
-      border-radius: 50%;
-      box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.2);
-    }
-
     .navigation {
       display: flex;
       gap: 1.5rem;
@@ -124,6 +135,11 @@
       pointer-events: none;
     }
 
+    .navigation.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
     .navigation a {
       color: white;
       text-decoration: none;
@@ -135,41 +151,27 @@
       color: #e74c3c;
     }
 
-    .navigation.visible {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
     body {
       padding-bottom: 100px;
     }
   </style>
 </head>
 <body>
-
   <a href="index.html" class="vinyl">
     <div class="vinyl-outer">
       <div class="vinyl-inner"></div>
-      <div class="vinyl-text">
-        <svg viewBox="0 0 100 100">
-          <path id="curve1" d="M 50, 50 m -40, 0 a 40,40 0 1,1 80,0 a 40,40 0 1,1 -80,0" />
-          <text>
-            <textPath href="#curve1" startOffset="50%" text-anchor="middle">Home</textPath>
-          </text>
-        </svg>
-      </div>
     </div>
   </a>
 
   <div class="content">
     <h1>Video Archive</h1>
     <div class="video-container">
-      <iframe width="560" height="315" src="https://www.youtube.com/embed/videoseries?si=fc1hsAQGa1KHm6J8&amp;list=PLV6OW3ZOl009rpxq0BWpx1Gi0hLKj2mtt" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        <p id="videoDescription">Event 1 - Description</p>
-        <div class="video-navigation">
-          <button id="prevBtn">Back</button>
-          <button id="nextBtn">Next</button>
-        </div>
+      <div id="player"></div>
+      <p id="videoDescription">Loading playlist...</p>
+      <div class="video-navigation">
+        <button id="prevBtn">Previous</button>
+        <button id="nextBtn">Next</button>
+      </div>
     </div>
   </div>
 
@@ -181,17 +183,20 @@
     <a href="radio.html">Radio</a>
   </div>
 
-  <script src="https://www.youtube.com/iframe_api"></script>
-
   <script>
     let player;
     let currentIndex = 0;
-
     const playlistId = 'PLV6OW3ZOl009rpxq0BWpx1Gi0hLKj2mtt';
+    let videoTitles = [];
 
+    // Load the YouTube IFrame Player API code asynchronously
+    const tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    const firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
     function onYouTubeIframeAPIReady() {
-      player = new YT.Player('videoPlayer', {
+      player = new YT.Player('player', {
         height: '315',
         width: '560',
         playerVars: {
@@ -209,28 +214,34 @@
     }
 
     function onPlayerReady(event) {
-      event.target.loadPlaylist({
-        listType: 'playlist',
-        list: playlistId,
-        index: currentIndex
-      });
+      // Get playlist data when player is ready
+      const playlist = player.getPlaylist();
+      if (playlist) {
+        updateVideoDescription();
+      }
     }
 
     function onPlayerStateChange(event) {
-      if (event.data === YT.PlayerState.ENDED) {
-        currentIndex = (currentIndex + 1) % player.getPlaylist().length;
-        player.playVideoAt(currentIndex);
+      // Update description when video changes
+      if (event.data === YT.PlayerState.PLAYING) {
+        currentIndex = player.getPlaylistIndex();
+        updateVideoDescription();
+      }
+    }
+
+    function updateVideoDescription() {
+      const videoData = player.getVideoData();
+      if (videoData) {
+        document.getElementById('videoDescription').textContent = videoData.title;
       }
     }
 
     document.getElementById('prevBtn').addEventListener('click', () => {
-      currentIndex = (currentIndex - 1 + player.getPlaylist().length) % player.getPlaylist().length;
-      player.playVideoAt(currentIndex);
+      player.previousVideo();
     });
 
     document.getElementById('nextBtn').addEventListener('click', () => {
-      currentIndex = (currentIndex + 1) % player.getPlaylist().length;
-      player.playVideoAt(currentIndex);
+      player.nextVideo();
     });
 
     // Show navigation bar at the bottom of the page
@@ -248,14 +259,3 @@
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
